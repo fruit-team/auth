@@ -1,9 +1,11 @@
-deploy: setup
-	@cd scripts/terraform && terraform apply
+deploy: setup cognito
 	@source ./venv/bin/activate && chalice deploy --stage dev
 
 clean:
 	@find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+
+cognito:
+	@cd scripts/terraform && terraform apply
 
 destroy: setup
 	@source ./venv/bin/activate && chalice delete --stage dev

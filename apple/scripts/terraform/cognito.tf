@@ -37,3 +37,21 @@ resource "aws_cognito_user_pool" "user-pool" {
     ignore_changes = [schema]
   }
 }
+
+# Document: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client
+resource "aws_cognito_user_pool_client" "client" {
+     name                = "${var.name}_user_pool_client_${var.environment}"
+     user_pool_id        = aws_cognito_user_pool.user-pool.id
+     generate_secret     = true
+     explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
+ }
+
+output "COGNITO_CLIENT_ID" {
+  description = "aws congnito user pool client id"
+  value       = "${aws_cognito_user_pool_client.client.id}"
+}
+
+output "COGNITO_CLIENT_SECRET" {
+  description = "aws congnito user pool client secret"
+  value       = "${aws_cognito_user_pool_client.client.client_secret}"
+}
