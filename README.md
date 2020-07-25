@@ -3,44 +3,54 @@ Authentication service of fruit.team
 
 ## Quick Start
 
-### Setup AWS
-
-#### Install awscli
-- https://awscli.amazonaws.com/AWSCLIV2.pkg
-
-#### Configure AWS
-- https://console.aws.amazon.com/iam/home?region=ap-northeast-2#/users/fruit_developer?section=security_credentials
-```bash
-$ aws configure
-AWS Access Key ID [None]: ****
-AWS Secret Access Key [None]: ****
-Default region name [None]: ap-northeast-2
-Default output format [None]: json
+### Setup
 ```
-
-#### Setup Virtualenv
-```bash
-$ python3 -m pip install virtualenv
+$ cd PATH/TO/WORKING/DIRECTORY/ROOT
 $ git clone https://github.com/fruit-team/auth.git
 $ cd auth/apple
-$ python3 -m virtualenv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
-```
-
-#### Test
-```bash
-$ brew install httpie
-$ cd auth/apple
-$ source venv/bin/activate
-$ http $(chalice url)
-
+$ make setup
 ```
 
 ### Deploy
-
 ```
+$ cd PATH/TO/WORKING/DIRECTORY/ROOT
 $ cd auth/apple
-$ source venv/bin/activate
-$ chalice deploy --stage staging
+$ make congnito
+# You can see this outputs
+COGNITO_CLIENT_ID = ****
+COGNITO_CLIENT_SECRET = ****
+
+# Edit apple/.chalice/config.json
+{
+  ...
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "environment_variables": {
+        "STAGE": "dev",
+        "COGNITO_CLIENT_ID": "****",    <------------------ COGNITO_CLIENT_ID
+        "COGNITO_CLIENT_SECRET": "****" <------------------ COGNITO_CLIENT_SECRET
+      }
+    },
+    "staging": {
+      "api_gateway_stage": "api"
+    },
+    "prod": {
+      "api_gateway_stage": "api"
+    }
+  }
+}
+
+$ make deploy
+```
+
+### Destroy all AWS services
+```
+$ make destroy
+...
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes <------------------ yes
 ```

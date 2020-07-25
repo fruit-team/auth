@@ -132,6 +132,7 @@ dmypy.json
 **/.chalice/deployments/
 **/.chalice/deployed/
 **/.chalice/venv/
+**/.chalice/config.json
 
 # Terraform
 **/.terraform/*
