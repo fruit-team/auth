@@ -8,6 +8,7 @@ def signup():
     '''
     http GET $(chalice url)signup id=tester name=james
     '''
+    pass
 
 @app.route('/')
 def index():
